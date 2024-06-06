@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/table.css">
+    <title>0BCA5</title>
+</head>
+<body>
+    <h1>Result</h1>
+    <div class="tbl-header">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>City</td>
+                <td>Place</td>
+                <td>№ Van</td>
+                <td>ID Card for payment</td>
+            </tr>
+        </thead>
+      </table>
+    </div>
+
+    <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+            
+            {% for element in elements %}
+            <tr>
+                <td id='0'>{{element[0]}}</td>
+                <td id='1'>{{element[1]}}</td>
+                <td id='2'>{{element[2]}}</td>
+                <td id='3'>{{element[3]}}</td>
+                <td id='4'>{{element[4]}}</td>
+                <td id='5'>{{element[5]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+<script src="../static/main.css"></script>
+</body>
+</html>

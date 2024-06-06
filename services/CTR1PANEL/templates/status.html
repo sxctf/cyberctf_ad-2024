@@ -1,0 +1,68 @@
+<head>
+  <link rel="stylesheet" href="{{url_for('static',filename='main.css')}}">
+  <nav class="menu">
+      <ul>
+          <li><a href="/">Главная</a></li>
+          <li><a href="accounting">Бухгалтерия</a></li>
+          <li><a href="cargo">Груз</a></li>
+          <li><a href="station">Станция</a></li>
+          <li><a href="logout">Выход</a></li>
+      </ul>
+  </nav> 
+</head>
+<body>
+  <title>Статус</title>
+  <h2> Статус </h2>
+  <div class = "flashed_messages">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
+
+    <div class="vagonLabel">
+      <div class="child">
+        Головной вагон
+      </div>
+      <div class="child">
+        Вагон Бухгалтерия
+      </div>
+      <div class="child">
+        Вагон с грузом
+      </div>
+    </div>
+    <div class="parent">
+      <div class="child"> 
+        <!--headVagon-->
+        <pre> Количество работников на поезде: {{workersAmount}}</pre>
+        <pre> Сотрудники с привелегиями капитана:
+        <select name="pets" id="pet-select">
+          {% for row in capitansList %}
+              <option value="{{row}}">{{row}}</option> 
+          {% endfor %}
+        </select>
+        </pre>
+        <pre> Минут до следующей станции: {{timeToStation}}</pre>
+        <pre> Состояние головного вагона: {{headVagonStatus}}</pre>
+      </div>
+      <div class="child">
+        <!--accountingVagon-->
+        <pre> Работа бухгалтерии: {{accountingStatus}}</pre>
+        <pre> Состояние вагона бухгалтерии: {{accountingVagonStatus}}</pre>
+      </div>
+      <div class="child">
+        <!--cargoVagon-->
+        <pre> Количество груза: {{cargoAmount}} шт.</pre>
+        <pre> Состояние вагона с грузом: {{cargoVagonStatus}}</pre>
+      </div>
+    </div>
+</body>
+
+<footer>
+  <div class="footer">&copy;<span> CyberCTF - [CTR1PANEL] </span></div>
+</footer>

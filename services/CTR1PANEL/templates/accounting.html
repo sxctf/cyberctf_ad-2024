@@ -1,0 +1,62 @@
+<head>
+    <link rel="stylesheet" href="{{url_for('static',filename='main.css')}}">
+    <nav class="menu">
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="status">Статус</a></li>
+            <li><a href="cargo">Груз</a></li>
+            <li><a href="station">Станция</a></li>
+            <li><a href="logout">Выход</a></li>
+        </ul>
+    </nav> 
+</head>
+<div class = "flashed_messages">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+<h2> Бухгалтерия </h2>
+<div class = "accountingContainer">
+    <p> Добро пожаловать {{username}}! Последний комментарий: {{user_comment}}</p>
+    <pre> Ты можешь изменить комментарий о себе </pre>
+        <form method="post" action="/accounting">
+            <input id="userComment" name="userComment" type="text"> 
+            <input type = "submit" value = "Обновить комментарий" name = "userCommentInput">
+        </form>
+    <p>Всего товаров: {{cargoAmountStatus}} шт
+    </p>
+    <p>Убраться в вагонах: 
+        <pre>Головной вагон: {{headVagonStatus}}</pre>
+        <pre>Бухгалтерия: {{accountingVagonStatus}}</pre>
+        <pre>Склад: {{cargoVagonStatus}}</pre>
+        <form method="post" action="/accounting">
+            <input type= "submit" name = "changeVagonStatusButton" value="Принудительная уборка">
+        </form>
+    <p>
+        <pre>Человекочасы на уборку поезда: {{humanTime}}</pre>
+        <form method="post" action="/accounting">
+            <pre> Введите новое количество человекочасов </pre>
+            <input id="humanTimeInput" name="humanTimeInput" type="text"> 
+            <input type = "submit" value = "Обновить данные" name = "updateHumanTimeInput">
+        </form>
+
+        <form method="post" action="/accounting">
+            <pre> Назначить капитаном пользователя </pre>
+            <select id = "dropdown" name = "userSelect">
+                {% for row in userArray %}
+                    <option value="{{row}}">{{row}}</option> 
+                {% endfor %}
+            </select> 
+            <input type = "submit" value = "Назначить капитаном" name = "nominateCaptain">
+        </form>
+    </p>
+</div>
+
+<footer>
+    <div class="footer">&copy;<span> CyberCTF - [CTR1PANEL] </span></div>
+</footer>

@@ -1,0 +1,94 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+[V.B0ARD] - User panel
+{% endblock %}
+
+{% block content %}
+
+{% if comment|length > 0 %}
+    <p class="lead text-success"> <b> {{ comment }} </b> </p>
+{% endif %}
+
+
+<p class="lead text-success"> <b>
+# Bid - Count
+    {% if bid|length > 0 %}
+        {{ bid|length }}
+    {% else %}
+        0
+    {% endif %}
+</b> </p>
+
+
+<table class="table table-dark text-success" id="bid">
+    <thead>
+        <tr>
+            <th scope="col">#id</th>
+            <th scope="col">Date</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Serial_key</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Status</th>
+            <th scope="col">Total_view</th>
+            <th scope="col">Current_view</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% if bid|length > 0 %}
+        {% for p in bid %}
+        <tr>
+            <td>{{ p.idb }}</td>
+            <td>{{ p.date|date:"d-m-Y" }}</td>
+            <td>{{ p.title }}</td>
+            <td>{{ p.content }}</td>
+            <td>{{ p.serial_key }}</td>
+            <td>{{ p.user }}</td>
+            <td>{{ p.status }}</td>
+            <td>{{ p.bid_view_total }}</td>
+            <td>{{ p.bid_view_cur }}</td>
+            <td><a href="{% url 'bid_read' p.idb %}" class="btn btn-warning" title="Read">*R</a><a href="{% url 'bid_upd' p.idb %}" class="btn btn-success" title="Update">*U</a><a href="{% url 'bid_del' p.idb %}" class="btn btn-danger" title="Delete">*D</a></td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <p class="lead text-success"> <b> # Not found</b> </p>
+    {% endif %}
+    </tbody>
+</table>
+
+<nav>
+    [
+    {% for p in bid.paginator.page_range %}
+        <a href="?page={{ p }}">{{ p }}</a> |
+    {% endfor %}
+    ]
+</nav>
+<br><br>
+    {% if pk|length > 0 %}
+        <table class="table table-dark text-warning">
+            <thead>
+                <tr>
+                    <th scope="col">#Promo_key</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for p in pk %}
+            <tr><td> {{ p.promo_key }} </td></tr>
+        {% endfor %}
+            </tbody>
+        </table>
+        <form action="{% url 'promo_active' %}" method="post">
+            {% for field in formpage %}
+            <div class="alert alert-success text-success" role="alert">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+            {% endfor %}
+            <br><input type="submit" class="btn btn-success" value="Submit">
+        </form>
+    {% endif %}
+
+{% endblock %}

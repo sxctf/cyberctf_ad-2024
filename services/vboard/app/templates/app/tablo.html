@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>[V.B0ARD] - TABLO train</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/navbar-fixed.css' %}">
+</head>
+
+<body style="background-color: #000000;">
+    <main class="container">
+        <div class="p-5 rounded" style="background-color: #0c1618;">
+    <table border="0" cellpadding="5" width="100%">
+        <tr align="center">
+            <td colspan="3"><h1 align="center" class="text-success">[V.B0ARD] - TABLO train</h1><br></td>
+        </tr>
+        <tr>
+            <td align="center" class="alert alert-success text-success" role="alert"><h2>Previous station <br> <b>[{{ station.0.name }}]</b> <br> {{ station.0.content }} </h2></td>
+            <td align="center" class="alert alert-warning text-warning" role="alert"><h2>Forward to... <br> <b>[{{ station.1.name }}]</b> <br> {{ station.1.content }} </h2></td>
+            <td align="center" class="alert alert-success text-success" role="alert"><h2>Next station <br> <b>[{{ station.2.name }}]</b> <br> {{ station.2.content }}</h2></td>
+        </tr>
+        <tr align="center">
+            <td colspan="3"><br>
+                <div class="alert alert-info text-success" role="alert">
+                {% if bid %}
+                    <h2> [ {{ bid.title }} ] <br> {{ bid.content }} </h2>
+                {% else %}
+                    <h2> Place for your advertising</h2>
+                {% endif %}
+                <br><b>/Information message on the train/</b>
+                </div>
+            </td>
+        </tr>
+    </table>
+    </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<head>
+    <link rel="stylesheet" href="{{url_for('static',filename='main.css')}}">
+    <nav class="menu">
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="registration">Регистрация</a></li>
+            <li><a href="station">Станция</a></li>
+        </ul>
+    </nav> 
+</head>
+<body> 
+    <style>
+    </style>
+    <main>
+        <div id="login" class="loginpage">
+            <form autocomplete="on", form method="POST">
+                <h1>Вход</h1>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class=flashes>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+                <form action="{{url_for('login', next = request.endpoint)}}" method="POST">
+                <p>
+                    <label for="username" class="uname" data-icon="u" > Имя пользователя </label>
+                    <input id="username" name="username" required="required" type="text" placeholder=""/>
+                </p>
+                <p>
+                    <label for="password" class="youpasswd" data-icon="p">Введите пароль</label>
+                    <input id="password" name="password" required="required" type="password" placeholder="" />
+                </p>
+                <p class="login button">
+                    <input type="submit" value="Login" />
+                </p>
+                </form>
+            </form>
+        </div>
+    </main>
+
+</body>
+<footer>
+    <div class="footer">&copy;<span> CyberCTF - [CTR1PANEL] </span></div>
+</footer>
+
+   

@@ -1,0 +1,24 @@
+# Игнорировать
+*.pyc
+*.pyo
+*.sqlite
+*.log
+*.db
+.env
+
+### Django ###
+*.pot
+__pycache__/
+local_settings.py
+
+**/__pycache__/
+**/.vscode/
+**/instance/
+**.code-workspace
+
+# Игнорировать каталог с файлами настройки
+**/config/
+
+# Игнорировать каталог с исполнимыми файлами и модулями (если таковой имеется)
+**/bin/
+**/venv/

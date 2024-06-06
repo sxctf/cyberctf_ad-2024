@@ -1,0 +1,14 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<h2>Login</h2>
+<div class="form-style">
+<p>You are logged out!</p>
+<a href="{% url 'login' %}">Log in again</a>
+</div>
+
+{% endblock %}

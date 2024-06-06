@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  pangolin:
+    restart: always
+    container_name: pangolinse
+    build: ./PangolinSE
+    command: /bin/bash -c " chown -R postgres:postgres /pgdata/06/data && chown -R postgres:postgres /pgerrorlogs/06 && su -s /bin/bash - postgres -c  './export.sh && tail -f /pgerrorlogs/06/postgresql.log'"
+    volumes:
+      - ./PangolinSE/pgdata/06/data:/pgdata/06/data
+      - ./PangolinSE/pgerrorlogs/06/:/pgerrorlogs/06/
+      - ./PangolinSE/script:/home/postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1024M
+
+    networks:
+        mynet:
+          ipv4_address: 172.26.0.2
+
+
+  smb:
+    restart: always
+    container_name: SmartBalance
+    depends_on:
+      - pangolin
+      - grpc
+    build: ./smartbalance
+    command: "go run ./main.go"
+    volumes:
+      - ./smartbalance:/application
+    ports:
+      - 9000:8080
+    networks:
+        mynet:
+          ipv4_address: 172.26.0.3
+
+
+  grpc:
+    restart: always
+    container_name: grpcServer
+    depends_on: 
+      - pangolin
+    build: ./rpcServer
+    command : "go run ./main.go"
+    volumes:
+      - ./rpcServer:/grpc_app
+    networks:
+        mynet:
+          ipv4_address: 172.26.0.4
+    
+networks:
+  mynet:
+    driver: bridge
+    ipam:
+        config:
+          - subnet: 172.26.0.0/24

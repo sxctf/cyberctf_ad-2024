@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    expose:
+      - 7000
+    volumes:
+      - ./:/app
+    command: "./start.sh"
+    restart: always
+
+  nginx:
+    restart: always
+    image: nginx:latest
+    expose:
+      - 7000
+    ports:
+      - 7000:7000
+    volumes:
+      - ./app/static:/srv/www/vboard/static
+      - ./logs:/srv/www/vboard/logs
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app

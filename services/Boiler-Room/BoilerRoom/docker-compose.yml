@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: br_nginx_container
+    restart: always
+    ports:
+      - ${PUBLIC_PORT}:${PUBLIC_PORT}
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./html:/usr/share/nginx/html:ro
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      - br_net
+  postgres:
+    image: postgres:latest
+    container_name: br_postgres_container
+    expose:
+      - ${DB_PORT}
+    restart: always
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - PGPORT=${DB_PORT}
+      - PGUSER=${DB_USER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+    volumes:
+      - br_postgres_volume:/var/lib/postgresql/data
+      - ./dbshell:/docker-entrypoint-initdb.d/
+    networks:
+      - br_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+  api:
+    container_name: br_api_container
+    build: .
+    command: "go run ./main.go"
+    expose:
+      - ${API_PORT}
+    restart: on-failure
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASS=${PGPASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - API_PORT=${API_PORT}
+    volumes:
+      - br_api_volume:/usr/src/app/
+      - ./logs/:/var/log/services/
+      - ./br-app/:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - br_net
+
+volumes:
+  br_postgres_volume:
+  br_api_volume:
+
+networks:
+  br_net:
+    driver: bridge

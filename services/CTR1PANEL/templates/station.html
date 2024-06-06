@@ -1,0 +1,119 @@
+<head>
+    <link rel="stylesheet" href="{{url_for('static',filename='main.css')}}">
+    <nav class="menu">
+        <ul>
+            <li><a>Информация о вагоне на станции</a></li>
+        </ul>
+    </nav> 
+</head>
+
+<div class = "flashed_messages">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+<body>
+
+{%if timetotrain == 'Поезд прибыл' %}
+        <pre> Состояние вагона: {{cargoVagonStatus}}</pre>
+        <div class="vagonLabel">
+            <div class="child">
+                Добавить свой груз
+            </div>
+            <div class="child">
+                Груз 1
+            </div>
+            <div class="child">
+                Груз 2
+            </div>
+            <div class="child">
+                Груз 3
+            </div>
+          </div>
+          <div class="parent">
+            <div class="child"> 
+                <!--Добавление груза-->
+                <form method="post" action="/station">
+                    <pre> Выбери тип груза:</pre>
+                    <select id = "dropdown" name = "AddedCargoTypeArrayDropdown">
+                        {% for row in AddedCargoTypeArray %}
+                            <option value="{{row}}">{{row}}</option> 
+                        {% endfor %}
+                    </select> 
+                    <pre> Укажи имя груза: </pre>
+                    <input type = "text" name="AddedCargoName">
+                    <pre> Укажи количество груза: </pre>
+                    <input type = "text" name="AddedCargoAmount">
+                    <pre> Добавь комментарий</pre>
+                    <input type = "text" name="AddedCommentCargoSteal">
+                    <input type= "submit" name="AddCargoButton" value="AddCargoButton">
+                </form>
+            </div>  
+            <div class="child"> 
+                <!--Груз 1 - Еда-->
+                <form method="post" action="/station">
+                <pre> Тип груза: {{cargoFoodType}}</pre>
+                <pre> Имя груза:</pre>
+                <select id = "dropdown" name = "cargoFoodName">
+                    {% for row in cargoFoodNameArray %}
+                        <option value="{{row}}">{{row}}</option> 
+                    {% endfor %}
+                </select> 
+                <pre> Количество груза: {{cargoFoodAmount}} шт.</pre>
+                <pre> Состояние груза: {{cargoFoodStatus}}</pre>
+                <pre> Введи пароль для кражи</pre>
+                    <input type = "text" name="passFoodSteal">
+                    <input type= "submit" name="FoodSteal" value="FoodSteal">
+                </form>
+            </div>  
+            <div class="child">
+                <!--Груз 2 - Техника-->
+                <form method="post" action="/station">
+                <pre> Тип груза: {{cargoTechType}}</pre>
+                <pre> Имя груза:</pre>
+                <select id = "dropdown" name = "cargoTechName">
+                    {% for row in cargoTechNameArray %}
+                        <option value="{{row}}">{{row}}</option> 
+                    {% endfor %}
+                </select> 
+                <pre> Количество груза: {{cargoTechAmount}} шт.</pre>
+                <pre> Состояние груза: {{cargoTechStatus}}</pre>
+                <pre> Введи пароль для кражи</pre>
+                    <input type = "text" name="passTechSteal">
+                    <input type= "submit" name="TechSteal" value="TechSteal">
+                </form>
+                </div>
+            <div class="child">
+            <!--Груз 3 - Наука-->
+                <form method="post" action="/station">
+                <pre> Тип груза: {{cargoScienceType}}</pre>
+                <pre> Имя груза: </pre>
+                <select id = "dropdown" name = "cargoScienceName">
+                    {% for row in cargoScienceNameArray %}
+                        <option value="{{row}}">{{row}}</option> 
+                    {% endfor %}
+                </select> 
+                <pre> Количество груза: {{cargoScienceAmount}} шт.</pre>
+                <pre> Состояние груза: {{cargoScienceStatus}}</pre>
+                <pre> Введи пароль для кражи</pre>
+                    <input type = "text" name="passScienceSteal">
+                    <input type= "submit" name="ScienceSteal" value="ScienceSteal">
+                </form>
+                </div>
+            </form>
+          </div>
+
+    {% else %}
+        <h1> Поезд прибудет через: {{timetotrain}} минут</h1>
+        <h2>Ожидайте поезд на станции!</h2>
+    {% endif %}
+</body>
+
+<footer>
+    <div class="footer">&copy;<span> CyberCTF - [CTR1PANEL] </span></div>
+</footer>

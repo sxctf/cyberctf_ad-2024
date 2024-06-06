@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boiler Room</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        .br-page {
+            height: 100vh;
+            background-color: #34495e;
+        }
+        .br-body {
+            padding-top: 1rem;
+        }
+        .title {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        .control {
+            top: .25rem;
+        }
+        .input {
+            font-size: 1.25rem;
+        }
+        .button {
+            font-size: 1.25rem;
+            background-color: #91744b;
+            color: white;
+        }
+        .image img {
+            width: unset;
+            max-height: 200px;
+            margin: auto;
+        }
+        .box {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <section class="br-page is-fullheight">
+        <div class="br-body">
+            <div class="container">
+                <div class="columns is-vcentered">
+                    <div class="column is-three-quarters">
+                        <h1 class="title" id="br-title">Boiler Room</h1>
+                        <div class="box">
+                            <form id="orderForm">
+                                <div class="table-container">
+                                    <table class="table is-striped is-fullwidth" id="statusTable"></table>
+                                </div>
+                                <p class="control">
+                                    <span class="tag is-warning is-large" id="order_time"></span>
+                                </p>
+                                <br></br>
+                                <p class="control">
+                                    <button class="button is-large" type="submit" id="bill-button">
+                                        Получить чек
+                                    </button>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="column is-quarter">
+                        <figure class="image">
+                            <img src="tea.png" alt="Choice Pict" id="pic">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function fetchData(id) {
+            fetch(`/api/order/${id}`, {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result == "OK") {
+                    const table = document.getElementById('statusTable');
+                    let tableHTML = `<thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <td>${data.data.orderid}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Объем</th>
+                                                <td>${data.data.type}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Кто оформил</th>
+                                                <td>${data.data.username}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Промокод</th>
+                                                <td>${data.data.coupon}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Время оформления</th>
+                                                <td>${data.data.datetime}</td>
+                                            </tr>
+                                        </thead>`;
+                    table.innerHTML += tableHTML;
+                    var orderType = data.data.type;
+                    var orderStatus = data.data.status;
+
+                    switch (orderType) {
+                        case "Кружка чая":
+                            if (!orderStatus) {
+                                document.getElementById('pic').src = "tea.png";
+                            } else {
+                                document.getElementById('pic').src = "tea-done.png";
+                            }
+                            break;
+                        case "Чашка кофе 3в1":
+                            if (!orderStatus) {
+                                document.getElementById('pic').src = "coffee.png";
+                            } else {
+                                document.getElementById('pic').src = "coffee-done.png";
+                            }
+                            break;
+                        case "Порция пищи богов":
+                            if (!orderStatus) {
+                                document.getElementById('pic').src = "godsgift.png";
+                            } else {
+                                document.getElementById('pic').src = "godsgift-done.png";
+                            }
+                            break;
+                        case "Порция бичпака":
+                            if (!orderStatus) {
+                                document.getElementById('pic').src = "bi4pack.png";
+                            } else {
+                                document.getElementById('pic').src = "bi4pack-done.png";
+                            }
+                            break;
+                    }
+                } else {
+                    document.getElementById("order-info").innerText = "Такого заказа не существует"
+                    document.getElementById("order-info").style="display: none;"
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function downloadBlob(blob, filename) {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        var id = new URLSearchParams(window.location.search).get('id');
+
+        if (id) {
+            fetchData(id);
+
+            var socket = new WebSocket(`ws://${window.location.host}/api/status/${id}`);
+
+            socket.onopen = function(event) {
+                console.log('Connection established!');
+            };
+
+            socket.onmessage = function(event) {
+                var orderTime = document.getElementById('order_time');
+                if (event.data == "true") {
+                    orderTime.textContent = "Кипяточек готов!";
+                    document.getElementById("order_time").classList.remove('is-warning');
+                    document.getElementById("order_time").classList.add('is-success');
+                    var picSrc = document.getElementById('pic').src;
+
+                    if (!picSrc.includes("-done")) {
+                        picSrc = picSrc.substring(0, picSrc.length-4);
+                        document.getElementById('pic').src = picSrc + "-done.png";
+                    }
+
+                    socket.close();
+                } else {
+                    orderTime.textContent = "Еще завариваем, пожалуйста, подождите";
+                }
+            };
+
+            socket.onerror = function(error) {
+                console.log('WebSocket Error: ' + error);
+            };
+        } else {
+          window.location.href = 'index.html';
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            fetch(`/api/bill/${id}`, {
+                method: 'GET'
+            })
+            .then((response) => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error: ${response.status}`);
+                }
+                return response.blob();
+            })
+            .then((blob) => downloadBlob(blob, `${id}_bill.txt`))
+            .catch(error => {
+                var modal = document.querySelector('.modal');
+                modal.classList.add('is-active');
+                document.querySelector('.delete').addEventListener('click', function() {
+                    modal.classList.remove('is-active');
+                });
+            });
+        });
+
+        document.getElementById('br-title').addEventListener('click', function(event) {
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

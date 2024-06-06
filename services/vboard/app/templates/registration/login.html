@@ -1,0 +1,22 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<p class="lead text-success"> <b> # Login </b> </p>
+
+<form action="" method="post">
+{% for field in form %}
+<div class="alert alert-success text-success" role="alert">
+    {{ field.label_tag }}
+    {{ field }}
+    {{ field.errors }}
+</div>
+{% endfor %}
+    <br><input type="submit" class="btn btn-success" value="Submit">
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package smartbalanceApi;
+
+option go_package = "./api";
+
+
+// Struct
+message User {
+    string username = 1;
+    string password = 2; 
+}
+
+
+message CoolingSystem {
+    string coolinglevel = 1;
+    string coolingfrequency = 2;
+    string coolingtype = 3; 
+}
+
+
+// Cooling System defenition
+message CoolingSystemRequest{
+    CoolingSystem info = 1;
+}
+
+message CoolingSystemResponse{
+    string record = 1;
+}
+
+message CoolingSystemGetRequest{
+    string record = 1;
+}
+
+message CoolingSystemGetResponse{
+    string value = 1;
+}
+
+
+// Check User
+message CheckUserRequest{
+    User info = 1;
+}
+
+message CheckUserResponse {
+    string token = 1;
+}
+
+
+// Create User
+message CreateUserRequest {
+    User info = 1;
+}
+
+message CreateUserResponse {
+    string confirm = 1;
+}
+
+// Dashboard
+message DashboardRequest {
+    string flag = 1;
+}
+
+message DashboardResponse {
+    repeated CoolingSystem info = 1;
+}
+
+
+service SmartBalanceService{
+    
+    
+    rpc CheckUser(CheckUserRequest) returns (CheckUserResponse);
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+    rpc CoolingSystem(CoolingSystemRequest) returns (CoolingSystemResponse);
+    rpc CoolingSystemCheck(CoolingSystemGetRequest) returns (CoolingSystemGetResponse);
+    rpc Dashboard(DashboardRequest) returns (DashboardResponse);
+    
+}

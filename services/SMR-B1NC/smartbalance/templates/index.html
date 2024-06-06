@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title>SmartBalance</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+ <script src="../assets/js/main.js"></script>
+  <div class="sidebar">
+    <div class="logo-details">
+      <a href="/">
+      <span class="logo_name">[SMR+B1BNC]</span>
+    </a>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="/dashboard" class="active">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+      </li>
+        <li>
+          <a href="/registration">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Registration</span>
+          </a>
+        </li>
+          <li>
+              <a href="/login" class="active">
+                <i class='bx bx-grid-alt' ></i>
+                <span class="links_name">Login</span>
+              </a>
+          </li>
+          <li>
+              <a href="/coolingSystem">
+                <i class='bx bxs-battery-low' ></i>
+                <span class="links_name">Cooling System</span>
+              </a>
+            </li>
+      </ul>
+  </div>
+
+<div class="title" style="margin-left: 300px; padding-top:50px">
+  Welcome to SmartBalance system. Good Luck. Have fun =)
+</div>
+
+<div style="margin-left: 300px; padding-top:50px">
+  <img src="../assets/img/main.png" height="500px" width="500px"/>
+</div>
+
+<section class="home-section">
+  {{ .result }}
+</section>
+
+</body>
+</html>

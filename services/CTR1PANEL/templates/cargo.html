@@ -1,0 +1,82 @@
+<head>
+    <link rel="stylesheet" href="{{url_for('static',filename='main.css')}}">
+    <nav class="menu">
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="status">Статус</a></li>
+            <li><a href="accounting">Бухгалтерия</a></li>
+            <li><a href="station">Станция</a></li>
+            <li><a href="logout">Выход</a></li>
+        </ul>
+    </nav> 
+</head>
+<div class = "flashed_messages">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+<body>
+<h2> Груз </h2>
+<div class="cargoСhangePass">
+    <form method="post" action="/cargo">
+    <p>Выбери тип груза:
+        <select id = "dropdown" name = "cargoSelect">
+            {% for row in cargoTypeArray %}
+                <option value="{{row}}">{{row}}</option> 
+            {% endfor %}
+        </select> 
+    </p>
+    
+        <p> Введи новый пароль для груза:
+        <input type = "text" name = "cargoChangePass" maxlength="4"></p>
+        <input type= "submit" name = cargoChangePassButton value="Сохранить пароль">
+    </form>
+    </p>
+</div>
+
+<div class="vagonLabel">
+    <div class="child">
+        Груз 1
+    </div>
+    <div class="child">
+        Груз 2
+    </div>
+    <div class="child">
+        Груз 3
+    </div>
+  </div>
+  <div class="parent">
+    <div class="child"> 
+        <!--Груз 1 - Еда-->
+        <pre> Тип груза: {{cargoFoodType}}</pre>
+        <pre> Количество груза: {{cargoFoodAmount}} шт.</pre>
+        <pre> Состояние груза: {{cargoFoodStatus}}</pre>
+        <pre> Пароль для груза 1: {{cargoFoodPass}}</pre>
+    </div>
+    <div class="child">
+        <!--Груз 2 - Техника-->
+        <pre> Тип груза: {{cargoTechType}}</pre>
+        <pre> Количество груза: {{cargoTechAmount}} шт.</pre>
+        <pre> Состояние груза: {{cargoTechStatus}}</pre>
+        <pre> Пароль для груза 2: {{cargoTechPass}}</pre>
+        </div>
+    <div class="child">
+    <!--Груз 3 - Наука-->
+        <pre> Тип груза: {{cargoScienceType}}</pre>
+        <pre> Количество груза: {{cargoScienceAmount}} шт.</pre>
+        <pre> Состояние груза: {{cargoScienceStatus}}</pre>
+        <pre> Пароль для груза 3: {{cargoSciencePass}}</pre>
+        </div>
+    </form>
+  </div>
+</body>
+
+<footer>
+    <div class="footer">&copy;<span> CyberCTF - [CTR1PANEL] </span></div>
+</footer>

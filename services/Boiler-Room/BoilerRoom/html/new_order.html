@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boiler Room</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        .br-page {
+            height: 100vh;
+            background-color: #34495e;
+        }
+        .br-body {
+            padding-top: 1rem;
+        }
+        .title {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        .control {
+            top: .25rem;
+        }
+        .input {
+            font-size: 1.25rem;
+        }
+        .button {
+            font-size: 1.25rem;
+            background-color: #91744b;
+            color: white;
+        }
+        .image img {
+            width: unset;
+            max-height: 200px;
+            margin: auto;
+        }
+        .box {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <section class="br-page is-fullheight">
+        <div class="br-body">
+            <div class="container">
+                <div class="columns is-vcentered">
+                    <div class="column is-three-quarters">
+                        <h1 class="title" id="br-title">Boiler Room</h1>
+                        <div class="box">
+                            <form id="orderForm">
+                                <div class="field">
+                                    Объем кипятка:
+                                    <div class="control">
+                                        <div class="select is-medium">
+                                            <select class="input" placeholder="Type" id="type">
+                                                <option value="Кружка чая" selected>Кружка чая</option>
+                                                <option value="Чашка кофе 3в1">Чашка кофе 3в1</option>
+                                                <option value="Порция пищи богов">Порция пищи богов</option>
+                                                <option value="Порция бичпака">Порция бичпака</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        Для кого:
+                                        <p class="control">
+                                            <input class="input" type="text" placeholder="Username" id="username">
+                                        </p>
+                                    </div>
+                                    <div class="field">
+                                        Промокод на быстрое кипячение:
+                                        <p class="control">
+                                            <input class="input" type="text" placeholder="Coupon" id="coupon">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="field is-grouped">
+                                    <p class="control">
+                                        <button class="button is-large" type="submit">
+                                            Вскипятить
+                                        </button>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="column is-quarter">
+                        <figure class="image">
+                            <img src="tea.png" alt="Choice Pict" id="pic">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Статус</p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <p id="modal-p-text">Что-то пошло не так</p>
+                <a id="modal-p-link"></a>
+            </section>
+        </div>
+    </div>
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var type = document.getElementById('type').value;
+            var username = document.getElementById('username').value;
+            var coupon = document.getElementById('coupon').value;
+            fetch('/api/new_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: type, username: username, coupon: coupon })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result == "OK") {
+                    document.getElementById('modal-p-text').innerText = `Уже кипятим!\nВаш номер заказа: ${data.data}`;
+                    document.getElementById('modal-p-link').setAttribute('href', window.location.origin + "/order.html?id=" + data.data);
+                    document.getElementById('modal-p-link').textContent = "Подробности";
+                    var modal = document.querySelector('.modal');
+                    modal.classList.add('is-active');
+                    document.querySelector('.delete').addEventListener('click', function() {
+                        modal.classList.remove('is-active');
+                    });
+                }
+            })
+            .catch(error => {
+                var modal = document.querySelector('.modal');
+                modal.classList.add('is-active');
+                document.querySelector('.delete').addEventListener('click', function() {
+                    modal.classList.remove('is-active');
+                });
+            });
+        });
+
+        document.getElementById('orderForm').addEventListener('change', function(event) {
+            var type = document.getElementById('type').value;
+
+            switch (type) {
+                case "Кружка чая":
+                    document.getElementById('pic').src = "tea.png";
+                    break;
+                case "Чашка кофе 3в1":
+                    document.getElementById('pic').src = "coffee.png";
+                    break;
+                case "Порция пищи богов":
+                    document.getElementById('pic').src = "godsgift.png";
+                    break;
+                case "Порция бичпака":
+                    document.getElementById('pic').src = "bi4pack.png";
+                    break;
+            }
+        });
+
+        document.getElementById('br-title').addEventListener('click', function(event) {
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

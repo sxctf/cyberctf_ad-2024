@@ -1,0 +1,202 @@
+ul {
+    list-style: none; 
+    margin: 0 auto;
+}
+a {
+    text-decoration: none;
+    font-family: 'Lora', serif;
+    transition: .5s linear;
+}
+i {
+    margin-right: 10px;
+}
+nav {
+    display: block;
+    width: 660px;
+    margin: 0 auto 30px;
+}
+.menu ul {
+    padding: 1em 0;
+    background: #0D1321;
+}
+.menu a {
+    padding: 1em;
+    background: rgba(177, 152, 145, .3);
+    border-right: 1px #FFEDDF;
+    color: #FFEDDF;
+}
+.menu a:hover {background: #7d7d7d;}
+.menu li {
+    display: inline;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; 
+}
+/*
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+*/
+button {
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #ddd;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+.infoText {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0D1321;
+    color: #FFEDDF;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: center;
+    margin: auto;
+  }
+
+
+.loginpage{
+    padding: 6px;
+    font-size: 16px;
+	  line-height: 16px;	
+	  color: #FFEDDF;
+    margin-left: auto;
+    margin-right: auto;
+    width: 16em;
+    border: 2px solid white;
+    background: #0D1321;
+}
+
+.ButtonStart{
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.parent {
+    display: flex;
+    position: relative;
+    grid-auto-columns: 1fr;
+    overflow: hidden;
+    border: 1px dashed var(--parent-border);    
+}
+.child {
+    position: relative;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    width: 50%;
+    padding: .5rem;
+    align-self: left;
+    box-sizing: border-box;
+    background-color: var(--demo-bg);
+    border: 1px solid var(--demo-border);
+}
+
+.vagonLabel {
+    display: flex;
+    position: relative;
+    grid-auto-columns: 1fr;
+    overflow: hidden;
+    border: 1px dashed var(--parent-border);  
+    text-align: center;
+}
+
+.flashes{
+    padding: 6px;
+    font-size: 16px;
+    line-height: 14px;	
+    color: #FFEDDF;
+    margin-left: auto;
+    margin-right: auto;
+    width: 13em;
+    border: 2px solid white;
+    background: #0D1321;
+}
+
+.accountingContainer{
+    position: relative;
+    border: 3px solid orange;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.accountingInput {
+    height: auto;
+    width: auto;
+    padding: 0;
+    line-height: 30px;
+    font-size: 20px;
+    padding: 0;
+    margin: 3px;
+    margin-left: 20px;
+    border: none;
+  }
+  .text_input:focus {
+    outline: none;
+  }
+
+
+.bottom{
+    display: block;
+    width: 600px;
+    color: white;
+    background: #0D1321;
+    text-decoration: none;
+    font-family: 'Lora', serif;
+    transition: .5s linear;
+    text-align: center;
+}
+:root {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+body {
+    height: 100vh;
+    overflow: hidden;
+    background-size: contain;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: #0D1321;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.pre{
+    word-break: break-all;
+}

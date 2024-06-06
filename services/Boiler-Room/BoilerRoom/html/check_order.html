@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boiler Room</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        .br-page {
+            height: 100vh;
+            background-color: #34495e;
+        }
+        .br-body {
+            padding-top: 1rem;
+        }
+        .title {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+        .control {
+            top: .25rem;
+        }
+        .input {
+            font-size: 1.25rem;
+        }
+        .button {
+            font-size: 1.25rem;
+            background-color: #91744b;
+            color: white;
+        }
+        .box {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <section class="br-page is-fullheight">
+        <div class="br-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-half">
+                        <h1 class="title" id="br-title">Boiler Room</h1>
+                        <div class="box">
+                            <form id="checkForm">
+                                <div class="field">
+                                    ID заказа:
+                                    <p class="control">
+                                        <input class="input" type="text" placeholder="ID" id="orderid">
+                                    </p>
+                                </div>
+                                <div class="field is-grouped">
+                                    <p class="control">
+                                        <button class="button is-large" type="submit">
+                                            Проверить статус
+                                        </button>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Статус</p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <p id="modal-p-text">Что-то пошло не так</p>
+            </section>
+        </div>
+    </div>
+    <script>
+        document.getElementById('checkForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var orderid = document.getElementById('orderid').value;
+            fetch('/api/check_order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderid: orderid })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result == "OK") {
+                    window.location.href = "order.html?id=" + orderid;
+                }
+            })
+            .catch(error => {
+                var modal = document.querySelector('.modal');
+                modal.classList.add('is-active');
+                document.querySelector('.delete').addEventListener('click', function() {
+                    modal.classList.remove('is-active');
+                });
+            });
+        });
+
+        document.getElementById('br-title').addEventListener('click', function(event) {
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
